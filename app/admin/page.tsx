@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import clientes from "@/data/clientes.json";
 
@@ -7,17 +9,37 @@ export default function Admin() {
     .sort((a, b) => b.compras - a.compras)
     .slice(0, 5);
 
+  function sair() {
+    localStorage.removeItem("admin-logado");
+    window.location.href = "/login";
+  }
+
   return (
 
     <main className="min-h-screen bg-black text-white p-8">
 
-      <h1 className="text-5xl font-bold text-red-600">
-        Painel Administrativo
-      </h1>
+      <div className="flex justify-between items-center">
 
-      <p className="mt-3 text-gray-400">
-        Clube Altas Horas
-      </p>
+        <div>
+
+          <h1 className="text-5xl font-bold text-red-600">
+            Painel Administrativo
+          </h1>
+
+          <p className="mt-3 text-gray-400">
+            Clube Altas Horas
+          </p>
+
+        </div>
+
+        <button
+          onClick={sair}
+          className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-xl font-bold transition"
+        >
+          Sair
+        </button>
+
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
 
@@ -61,7 +83,7 @@ export default function Admin() {
 
       <div className="space-y-3 mt-6">
 
-        {ultimos.map(cliente => (
+        {ultimos.map((cliente) => (
 
           <div
             key={cliente.codigo}
