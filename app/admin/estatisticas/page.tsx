@@ -1,24 +1,23 @@
-import { listarClientes } from "@/lib/clientes";
+import clientes from "@/data/clientes.json";
+import type { Cliente } from "@/types/cliente";
 
 export default function Estatisticas() {
+  const listaClientes = clientes as Cliente[];
 
-  const clientes = listarClientes();
+  const totalClientes = listaClientes.length;
 
-  const totalClientes = clientes.length;
-
-  const totalCompras = clientes.reduce(
+  const totalCompras = listaClientes.reduce(
     (total, cliente) => total + cliente.compras,
     0
   );
 
-  const totalPontos = clientes.reduce(
+  const totalPontos = listaClientes.reduce(
     (total, cliente) => total + cliente.pontos,
     0
   );
 
   return (
     <main className="min-h-screen bg-black text-white p-8">
-
       <h1 className="text-5xl font-bold text-red-600">
         Estatísticas
       </h1>
@@ -27,6 +26,7 @@ export default function Estatisticas() {
 
         <div className="bg-zinc-900 rounded-xl p-6">
           <p>Total de Clientes</p>
+
           <h2 className="text-4xl font-bold mt-2">
             {totalClientes}
           </h2>
@@ -34,6 +34,7 @@ export default function Estatisticas() {
 
         <div className="bg-zinc-900 rounded-xl p-6">
           <p>Total de Compras</p>
+
           <h2 className="text-4xl font-bold mt-2">
             {totalCompras}
           </h2>
@@ -41,13 +42,13 @@ export default function Estatisticas() {
 
         <div className="bg-zinc-900 rounded-xl p-6">
           <p>Total de Pontos</p>
+
           <h2 className="text-4xl font-bold mt-2">
             {totalPontos}
           </h2>
         </div>
 
       </div>
-
     </main>
   );
 }

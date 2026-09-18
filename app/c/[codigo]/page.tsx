@@ -1,5 +1,7 @@
 import { buscarCliente } from "@/lib/clientes";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{
@@ -8,20 +10,19 @@ type Props = {
 };
 
 export default async function Pagina({ params }: Props) {
-
   const { codigo } = await params;
 
   const cliente = buscarCliente(codigo);
 
+  // Se a tag ainda não possui cliente,
+  // envia para o cadastro.
   if (!cliente) {
-    notFound();
+    redirect(`/cadastro?codigo=${codigo}`);
   }
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center">
-
       <div className="text-center">
-
         <h1 className="text-5xl font-bold text-red-600">
           Clube Altas Horas
         </h1>
@@ -37,9 +38,7 @@ export default async function Pagina({ params }: Props) {
         <p className="mt-10 text-xl">
           ⭐ {cliente.pontos} pontos
         </p>
-
       </div>
-
     </main>
   );
 }

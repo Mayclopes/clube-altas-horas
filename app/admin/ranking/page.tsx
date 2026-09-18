@@ -1,12 +1,13 @@
 import clientes from "@/data/clientes.json";
+import type { Cliente } from "@/types/cliente";
 
 export default function Ranking() {
+  const listaClientes = clientes as Cliente[];
 
-  const ranking = [...clientes]
+  const ranking = [...listaClientes]
     .sort((a, b) => b.pontos - a.pontos);
 
   return (
-
     <main className="min-h-screen bg-black text-white p-8">
 
       <h1 className="text-5xl font-bold text-red-600">
@@ -25,9 +26,7 @@ export default function Ranking() {
             <div>
 
               <h2 className="text-2xl font-bold">
-
                 #{index + 1} {cliente.nome}
-
               </h2>
 
               <p>{cliente.codigo}</p>
@@ -35,9 +34,7 @@ export default function Ranking() {
             </div>
 
             <h2 className="text-3xl">
-
               ⭐ {cliente.pontos}
-
             </h2>
 
           </div>
@@ -47,7 +44,5 @@ export default function Ranking() {
       </div>
 
     </main>
-
   );
-
 }

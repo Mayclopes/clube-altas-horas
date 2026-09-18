@@ -3,19 +3,20 @@
 import { useState } from "react";
 import clientes from "@/data/clientes.json";
 import Link from "next/link";
+import type { Cliente } from "@/types/cliente";
 
 export default function Buscar() {
-
   const [texto, setTexto] = useState("");
 
-  const filtrados = clientes.filter((cliente) =>
+  const listaClientes = clientes as Cliente[];
+
+  const filtrados = listaClientes.filter((cliente) =>
     cliente.nome.toLowerCase().includes(texto.toLowerCase()) ||
     cliente.codigo.toLowerCase().includes(texto.toLowerCase())
   );
 
   return (
     <main className="min-h-screen bg-black text-white p-8">
-
       <h1 className="text-5xl font-bold text-red-600">
         Buscar Cliente
       </h1>
@@ -30,7 +31,6 @@ export default function Buscar() {
       <div className="space-y-4 mt-8">
 
         {filtrados.map((cliente) => (
-
           <Link
             key={cliente.codigo}
             href={`/admin/cliente/${cliente.codigo}`}
@@ -44,11 +44,9 @@ export default function Buscar() {
             <p>{cliente.codigo}</p>
 
           </Link>
-
         ))}
 
       </div>
-
     </main>
   );
 }
