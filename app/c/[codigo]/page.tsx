@@ -1,4 +1,11 @@
-import { buscarCliente } from "@/lib/clientes";
+import { sql } from "@/lib/db";
+
+import {
+  COOKIE_ADMIN,
+  sessaoAdminValida,
+} from "@/lib/auth";
+
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -9,36 +16,64 @@ type Props = {
   }>;
 };
 
-export default async function Pagina({ params }: Props) {
+export default async function PaginaNFC({
+  params,
+}: Props) {
   const { codigo } = await params;
 
-  const cliente = buscarCliente(codigo);
+  const codigoNormalizado = codigo
+    .trim()
+    .toUpperCase();
 
-  // Se a tag ainda não possui cliente,
-  // envia para o cadastro.
-  if (!cliente) {
-    redirect(`/cadastro?codigo=${codigo}`);
+  // Aceita somente o padrão dos
+  // chaveiros do Clube Altas Horas.
+  if (!/^AH\d{6}$/.test(codigoNormalizado)) {
+    redirect("/");
   }
 
-  return (
-    <main className="min-h-screen bg-black text-white flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold text-red-600">
-          Clube Altas Horas
-        </h1>
+  // Verifica se o celular possui
+  // uma sessão administrativa válida.
+  const armazenamento = await cookies();
 
-        <p className="mt-8 text-2xl">
-          Olá,
-        </p>
+  const sessao = armazenamento.get(
+    COOKIE_ADMIN
+  )?.value;
 
-        <h2 className="text-4xl font-bold mt-2">
-          {cliente.nome}
-        </h2>
+  const administrador =
+    sessaoAdminValida(sessao);
 
-        <p className="mt-10 text-xl">
-          ⭐ {cliente.pontos} pontos
-        </p>
-      </div>
-    </main>
+  // Busca o cliente no Neon.
+  const clientes = await sql`
+    SELECT codigo
+    FROM clientes_v2
+    WHERE codigo = ${codigoNormalizado}
+    LIMIT 1
+  `;
+
+  // Administrador autenticado:
+  // abre diretamente o atendimento.
+  if (administrador) {
+    if (clientes.length > 0) {
+      redirect(
+        `/admin/cliente/${codigoNormalizado}`
+      );
+    }
+
+    redirect(
+      `/cadastro?codigo=${codigoNormalizado}`
+    );
+  }
+
+  // Cliente comum:
+  // abre seu perfil sem login.
+  if (clientes.length > 0) {
+    redirect(
+      `/cliente/${codigoNormalizado}`
+    );
+  }
+
+  // Chaveiro ainda não cadastrado.
+  redirect(
+    `/cadastro?codigo=${codigoNormalizado}`
   );
 }

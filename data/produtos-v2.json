@@ -1,0 +1,30 @@
+[
+  {
+    "id": "P001",
+    "nome": "Dose de Jack Daniel's",
+    "descricao": "Dose tradicional de Jack Daniel's",
+    "pontos": 10,
+    "ativo": true
+  },
+  {
+    "id": "P002",
+    "nome": "Gin",
+    "descricao": "Dose de gin",
+    "pontos": 8,
+    "ativo": true
+  },
+  {
+    "id": "P003",
+    "nome": "Copão",
+    "descricao": "Copão Altas Horas",
+    "pontos": 15,
+    "ativo": true
+  },
+  {
+    "id": "P004",
+    "nome": "Cerveja",
+    "descricao": "Unidade de cerveja",
+    "pontos": 5,
+    "ativo": true
+  }
+]

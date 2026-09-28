@@ -1,47 +1,106 @@
-"use client";
-
+import { sql } from "@/lib/db";
 import Link from "next/link";
-import clientes from "@/data/clientes.json";
-import type { Cliente } from "@/types/cliente";
+import ListaClientes from "./ListaClientes";
 
-export default function Clientes() {
-  const listaClientes = clientes as Cliente[];
+type ClienteV2 = {
+  codigo: string;
+  nome: string;
+  whatsapp: string;
+  pontos: number;
+  compras: number;
+  ativo: boolean;
+};
+
+export const dynamic = "force-dynamic";
+
+export default async function Clientes() {
+  const resultado = await sql`
+    SELECT
+      codigo,
+      nome,
+      whatsapp,
+      pontos,
+      compras,
+      ativo
+    FROM clientes_v2
+    ORDER BY nome ASC
+  `;
+
+  const clientes =
+    resultado as ClienteV2[];
+
+  const ativos =
+    clientes.filter(
+      (cliente) => cliente.ativo
+    ).length;
 
   return (
-    <main className="min-h-screen bg-black text-white p-8">
-      <h1 className="text-5xl font-bold text-red-600">
-        Clientes
-      </h1>
+    <main className="min-h-screen bg-black text-white px-5 py-8">
 
-      <p className="mt-4 text-zinc-400">
-        Lista de clientes cadastrados no Clube Altas Horas.
-      </p>
+      <div className="max-w-3xl mx-auto">
 
-      <div className="space-y-4 mt-10">
-        {listaClientes.map((cliente) => (
+        <div className="flex items-start justify-between gap-4">
+
+          <div>
+
+            <p className="text-red-500 font-bold">
+              Administração
+            </p>
+
+            <h1 className="text-4xl font-bold mt-2">
+              Clientes
+            </h1>
+
+            <p className="text-zinc-400 mt-3">
+              Localize um cliente e abra
+              o atendimento.
+            </p>
+
+          </div>
+
           <Link
-            key={cliente.codigo}
-            href={`/admin/cliente/${cliente.codigo}`}
-            className="block bg-zinc-900 rounded-xl p-5 border border-zinc-700 hover:border-red-600 transition"
+            href="/admin"
+            className="bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3"
           >
-            <h2 className="text-2xl font-bold">
-              {cliente.nome}
-            </h2>
+            Voltar
+          </Link>
 
-            <p className="text-zinc-400 mt-1">
-              Código: {cliente.codigo}
-            </p>
+        </div>
 
-            <p className="mt-3">
-              ⭐ {cliente.pontos} pontos
-            </p>
+        <div className="grid grid-cols-2 gap-4 mt-8">
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
 
             <p className="text-zinc-400">
-              🛒 {cliente.compras} compras
+              Total
             </p>
-          </Link>
-        ))}
+
+            <p className="text-3xl font-bold mt-2">
+              {clientes.length}
+            </p>
+
+          </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+
+            <p className="text-zinc-400">
+              Ativos
+            </p>
+
+            <p className="text-3xl font-bold text-red-500 mt-2">
+              {ativos}
+            </p>
+
+          </div>
+
+        </div>
+
+        <ListaClientes
+          clientes={clientes}
+        />
+
       </div>
+
     </main>
   );
 }

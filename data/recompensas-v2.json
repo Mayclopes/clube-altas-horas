@@ -1,0 +1,30 @@
+[
+  {
+    "id": "R001",
+    "nome": "Dose grátis",
+    "descricao": "Uma dose grátis à escolha da casa",
+    "pontos": 50,
+    "ativo": true
+  },
+  {
+    "id": "R002",
+    "nome": "Desconto de R$10",
+    "descricao": "R$10 de desconto na compra",
+    "pontos": 80,
+    "ativo": true
+  },
+  {
+    "id": "R003",
+    "nome": "Copão grátis",
+    "descricao": "Um copão grátis",
+    "pontos": 120,
+    "ativo": true
+  },
+  {
+    "id": "R004",
+    "nome": "Produto especial",
+    "descricao": "Produto especial escolhido pela casa",
+    "pontos": 200,
+    "ativo": true
+  }
+]
