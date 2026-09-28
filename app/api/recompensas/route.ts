@@ -1,33 +1,32 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
-
-  return NextResponse.json([
-
+function rotaV1Desativada() {
+  return NextResponse.json(
     {
-
-      nome: "Cerveja Long Neck",
-
-      pontos: 10
-
+      erro: "Esta API pertence à V1 e foi desativada.",
     },
-
     {
-
-      nome: "Dose de Whisky",
-
-      pontos: 25
-
-    },
-
-    {
-
-      nome: "Combo Especial",
-
-      pontos: 50
-
+      status: 410,
     }
+  );
+}
 
-  ]);
+export async function GET() {
+  return rotaV1Desativada();
+}
 
+export async function POST() {
+  return rotaV1Desativada();
+}
+
+export async function PUT() {
+  return rotaV1Desativada();
+}
+
+export async function PATCH() {
+  return rotaV1Desativada();
+}
+
+export async function DELETE() {
+  return rotaV1Desativada();
 }

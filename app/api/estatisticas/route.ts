@@ -1,25 +1,28 @@
 import { NextResponse } from "next/server";
-import clientes from "@/data/clientes.json";
-import type { Cliente } from "@/types/cliente";
+
+function rotaDesativada() {
+  return NextResponse.json(
+    {
+      erro: "Esta API pertence à V1 e foi desativada.",
+    },
+    {
+      status: 410,
+    }
+  );
+}
 
 export async function GET() {
-  const listaClientes = clientes as Cliente[];
+  return rotaDesativada();
+}
 
-  const totalClientes = listaClientes.length;
+export async function POST() {
+  return rotaDesativada();
+}
 
-  const totalCompras = listaClientes.reduce(
-    (total, cliente) => total + cliente.compras,
-    0
-  );
+export async function PUT() {
+  return rotaDesativada();
+}
 
-  const totalPontos = listaClientes.reduce(
-    (total, cliente) => total + cliente.pontos,
-    0
-  );
-
-  return NextResponse.json({
-    totalClientes,
-    totalCompras,
-    totalPontos,
-  });
+export async function DELETE() {
+  return rotaDesativada();
 }
