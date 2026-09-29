@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Clube Altas Horas V2
 
-## Getting Started
+Programa de fidelidade com cadastro por código/NFC, pontos por produto, resgates
+e atendimento administrativo. Stack: Next.js 16 (App Router), React 19,
+TypeScript, Tailwind CSS, Neon/PostgreSQL e Vercel Blob para fotos.
 
-First, run the development server:
+## Estrutura
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- app/admin: atendimento, catálogo, pontos, ranking e estatísticas protegidos.
+- app/api/*-v2: operações V2; lib/db: cliente SQL Neon.
+- app/c/[codigo]: entrada NFC; app/cliente/[codigo]: cartão e histórico públicos.
+- lib/auth e proxy.ts: sessão e proteção administrativa existentes.
+- database: baseline real, processo de migrations e proposta financeira.
+- scripts: inspeção e testes SQL somente leitura, sem saída de dados pessoais.
+
+Saldo disponível é o valor utilizável em resgates em clientes_v2.pontos.
+Pontos conquistados do ranking somam somente pontos positivos de COMPRA.
+RESGATE reduz saldo, mas não conquista; BONUS/AJUSTE não entram no ranking.
+Ranking mensal usa o mês de America/Sao_Paulo com início inclusivo/fim exclusivo.
+Estatísticas consultam todo o histórico; frequência é a média dos intervalos
+consecutivos por cliente, ponderada por intervalos, não por clientes. Atualmente
+COMPRA é um registro de operação, sem deduplicação confiável de visitas/vendas.
+
+## Desenvolvimento e validação
+
+Use a configuração local já provisionada; não copie credenciais para documentação.
+Instale dependências com npm ci; execute npm run dev. Valide com:
+
+```sh
+npx tsc --noEmit
+npm run build
+git diff --check
+node scripts/validate-reports.cjs
+node scripts/test-report-queries.cjs
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O build usa Google Fonts e pode precisar de rede. Scripts SQL carregam ambiente
+internamente e usam READ ONLY; não imprimem conexão nem registros de clientes.
+Nunca versionar .env (já ignorado), imprimir valores, incluir tokens em logs ou
+colocar segredos em variáveis NEXT_PUBLIC. Não fazer testes de mutação em produção.
+As rotas públicas de cartão/histórico continuam baseadas no código existente;
+as telas administrativas novas não criam APIs públicas nem exportam contatos.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Banco e evolução
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Leia database/README.md e database/financeiro.md. Baseline é documental.
+A proposta financeira está fora de migrations aprovadas e NÃO foi executada no Neon real.
+Não há runner automático. Preços, carrinho, idempotência e relatórios estão preparados, com fallback até a migration financeira ser aprovada e aplicada.
+APIs V1 contidas retornam 410; arquivos antigos ainda presentes não são fonte V2.
 
-## Learn More
+Fluxo: PLANEJAR → ALTERAR → TESTAR → COMMIT. Commit/push somente quando autorizados.
+Antes de alterar código Next.js, leia a documentação da versão instalada em
+node_modules/next/dist/docs, conforme AGENTS.md. Preserve contratos de cadastro,
+NFC, resgate e fotos; valide concorrência num banco isolado antes de implantação.
 
-To learn more about Next.js, take a look at the following resources:
+## Financeiro preparado
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+POST /api/vendas-v2 registra uma venda completa de forma atômica e idempotente.
+Dinheiro usa centavos BIGINT/string; preços/pontos vêm do servidor. O carrinho
+substitui a pontuação simples somente após a presença do schema financeiro.
+Compras antigas não geram faturamento fictício. Consulte database/financeiro.md.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Execute npm run test:financeiro para testar a migration e os fluxos em PostgreSQL
+local em memória (PGlite). Esse teste não lê .env e não conecta ao Neon.

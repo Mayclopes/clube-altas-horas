@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import PainelPontuacao from "./PainelPontuacao";
 import EditarCliente from "./EditarCliente";
 import FotoCliente from "./FotoCliente";
+import CarrinhoVenda from "./CarrinhoVenda";
+import { financeiroDisponivel } from "@/lib/financeiro/disponibilidade";
 
 type Props = {
   params: Promise<{
@@ -30,6 +32,7 @@ type ProdutoV2 = {
   descricao: string;
   pontos: number;
   ativo: boolean;
+  preco_centavos: string | null;
 };
 
 export const dynamic = "force-dynamic";
@@ -89,14 +92,16 @@ export default async function ClienteAdmin({
       nome,
       descricao,
       pontos,
-      ativo
-    FROM produtos_v2
+      ativo,
+      to_jsonb(p)->>'preco_centavos' AS preco_centavos
+    FROM produtos_v2 p
     WHERE ativo = TRUE
     ORDER BY id
   `;
 
   const produtos =
     resultadoProdutos as ProdutoV2[];
+  const financeiro = await financeiroDisponivel();
 
   return (
     <main className="min-h-screen bg-black px-5 py-8 text-white">
@@ -215,6 +220,7 @@ export default async function ClienteAdmin({
         </div>
 
         {cliente.ativo ? (
+          financeiro ? <CarrinhoVenda key={cliente.codigo} codigo={cliente.codigo} produtos={produtos} /> :
           <PainelPontuacao
             codigo={cliente.codigo}
             nomeCliente={cliente.nome}

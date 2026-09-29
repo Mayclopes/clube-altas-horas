@@ -2,8 +2,11 @@
 
 import type { Produto } from "@/types/produto";
 import { useEffect, useState } from "react";
+import { centavosParaReais, reaisParaCentavos, MAX_PRECO } from "@/lib/financeiro/dinheiro";
 
 export default function Produtos() {
+  const [financeiro, setFinanceiro] = useState(false);
+  const [precos, setPrecos] = useState<Record<string, string>>({});
   const [listaProdutos, setListaProdutos] =
     useState<Produto[]>([]);
 
@@ -33,6 +36,8 @@ export default function Produtos() {
           await resposta.json();
 
         setListaProdutos(dados);
+        setFinanceiro(resposta.headers.get("X-Financeiro-Disponivel") === "true");
+        setPrecos(Object.fromEntries((dados as Produto[]).map(p => [p.id, p.preco_centavos == null ? "" : centavosParaReais(p.preco_centavos)])));
       } catch {
         setMensagem(
           "Não foi possível carregar os produtos."
@@ -120,6 +125,9 @@ export default function Produtos() {
     setMensagem("");
 
     try {
+      const textoPreco = precos[produto.id]?.trim() ?? "";
+      const preco = !financeiro || !textoPreco ? null : reaisParaCentavos(textoPreco);
+      if (preco !== null && BigInt(preco) > MAX_PRECO) throw new Error("Preço acima do limite permitido.");
       const resposta = await fetch(
         "/api/produtos-v2",
         {
@@ -133,6 +141,7 @@ export default function Produtos() {
             nome: produto.nome,
             pontos: produto.pontos,
             ativo: produto.ativo,
+            ...(financeiro ? { preco_centavos: preco } : {}),
           }),
         }
       );
@@ -183,6 +192,7 @@ export default function Produtos() {
           Configure o nome, os pontos e o
           status dos produtos.
         </p>
+        {!financeiro && <p className="mt-4 rounded-xl border border-zinc-700 p-4 text-zinc-400">Edição de preços disponível após a ativação do registro de vendas. O catálogo atual continua funcionando.</p>}
 
         {mensagem && (
           <div className="mt-6 bg-zinc-900 border border-zinc-700 rounded-xl p-4 text-green-400 font-bold">
@@ -231,6 +241,13 @@ export default function Produtos() {
                       <p className="text-zinc-400 mt-3">
                         {produto.descricao}
                       </p>
+                      <label className="mt-4 block text-sm text-zinc-400" htmlFor={`preco-${produto.id}`}>Preço em reais</label>
+                      <input id={`preco-${produto.id}`} type="text" inputMode="decimal" placeholder="Sem preço"
+                        disabled={!financeiro || salvando === produto.id}
+                        value={precos[produto.id] ?? ""}
+                        onChange={e => setPrecos(atual => ({ ...atual, [produto.id]: e.target.value }))}
+                        className="mt-2 w-full rounded-xl border border-zinc-600 bg-black p-3 disabled:opacity-50" />
+                      <p className="mt-2 text-sm text-zinc-500">Use 10,50 para R$ 10,50. Vazio: produto sem preço, indisponível para vendas financeiras.</p>
 
                     </div>
 

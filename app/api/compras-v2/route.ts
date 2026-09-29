@@ -138,67 +138,55 @@ export async function POST(
       );
     }
 
-    const pontosProduto =
-      Number(produto.pontos);
+    const movimentacaoId = crypto.randomUUID();
 
-    const pontosGanhos =
-      pontosProduto * quantidade;
-
-    const saldoAnterior =
-      Number(cliente.pontos);
-
-    const saldoNovo =
-      saldoAnterior + pontosGanhos;
-
-    const comprasAnteriores =
-      Number(cliente.compras);
-
-    const novoTotalCompras =
-      comprasAnteriores + 1;
-
-    const movimentacaoId =
-      crypto.randomUUID();
-
-    const descricao =
-      quantidade === 1
-        ? `Compra: ${produto.nome}`
-        : `Compra: ${quantidade}x ${produto.nome}`;
-
-    await sql.transaction([
-      sql`
-        UPDATE clientes_v2
-        SET
-          pontos = ${saldoNovo},
-          compras = ${novoTotalCompras},
-          atualizado_em = NOW()
-        WHERE codigo = ${codigo}
-      `,
-
-      sql`
+    // Uma instrução: incremento sobre a linha bloqueada e histórico derivado
+    // do RETURNING. COMPRA e RESGATE serializam no mesmo cliente; falha no
+    // INSERT desfaz também o UPDATE. Não usar saldos lidos antes da operação.
+    const resultado = await sql`
+      WITH produto AS (
+        SELECT id, nome, pontos
+        FROM produtos_v2
+        WHERE id = ${produtoId} AND ativo = TRUE
+        FOR SHARE
+      ), credito AS (
+        UPDATE clientes_v2 AS c
+        SET pontos = c.pontos + p.pontos * ${quantidade},
+            compras = c.compras + 1,
+            atualizado_em = NOW()
+        FROM produto p
+        WHERE c.codigo = ${codigo} AND c.ativo = TRUE
+        RETURNING c.codigo, c.pontos AS saldo_novo, c.compras,
+          p.id AS produto_id, p.nome AS produto_nome,
+          p.pontos * ${quantidade} AS pontos_ganhos
+      ), registro AS (
         INSERT INTO movimentacoes_v2 (
-          id,
-          cliente_codigo,
-          tipo,
-          descricao,
-          pontos,
-          saldo_anterior,
-          saldo_novo,
-          produto_id,
-          quantidade
+          id, cliente_codigo, tipo, descricao, pontos,
+          saldo_anterior, saldo_novo, produto_id, quantidade
         )
-        VALUES (
-          ${movimentacaoId},
-          ${codigo},
-          'COMPRA',
-          ${descricao},
-          ${pontosGanhos},
-          ${saldoAnterior},
-          ${saldoNovo},
-          ${produto.id},
-          ${quantidade}
-        )
-      `,
-    ]);
+        SELECT ${movimentacaoId}, codigo, 'COMPRA',
+          CASE WHEN ${quantidade} = 1 THEN 'Compra: ' || produto_nome
+            ELSE 'Compra: ' || ${quantidade}::text || 'x ' || produto_nome END,
+          pontos_ganhos, saldo_novo - pontos_ganhos, saldo_novo,
+          produto_id, ${quantidade}
+        FROM credito
+        RETURNING id
+      )
+      SELECT credito.* FROM credito CROSS JOIN registro
+    `;
+
+    if (resultado.length === 0) {
+      return Response.json(
+        { erro: "Compra não registrada. Confira se o cliente e o produto continuam ativos." },
+        { status: 409 }
+      );
+    }
+
+    const compraRegistrada = resultado[0];
+    const pontosGanhos = Number(compraRegistrada.pontos_ganhos);
+    const saldoNovo = Number(compraRegistrada.saldo_novo);
+    const saldoAnterior = saldoNovo - pontosGanhos;
+    const novoTotalCompras = Number(compraRegistrada.compras);
 
     return Response.json(
       {
@@ -209,7 +197,7 @@ export async function POST(
 
         compra: {
           cliente: codigo,
-          produto: produto.nome,
+          produto: compraRegistrada.produto_nome,
           quantidade,
           pontosGanhos,
           saldoAnterior,

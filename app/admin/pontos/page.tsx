@@ -1,59 +1,33 @@
-"use client";
-
 import Link from "next/link";
-import clientes from "@/data/clientes.json";
-import recompensas from "@/data/recompensas.json";
-import type { Cliente } from "@/types/cliente";
+import { sql } from "@/lib/db";
+import ListaPontos from "./ListaPontos";
 
-export default function Pontos() {
-  const listaClientes = clientes as Cliente[];
+export const dynamic = "force-dynamic";
+
+export default async function Pontos() {
+  const resultado = await sql`
+    SELECT c.codigo, c.nome, c.pontos, c.compras,
+      COUNT(r.id) AS recompensas_disponiveis
+    FROM clientes_v2 c
+    LEFT JOIN recompensas_v2 r
+      ON r.ativo = TRUE AND r.pontos > 0 AND r.pontos <= c.pontos
+    WHERE c.ativo = TRUE
+    GROUP BY c.codigo, c.nome, c.pontos, c.compras
+    ORDER BY c.pontos DESC, c.nome ASC, c.codigo ASC
+  `;
+  const clientes = resultado.map((c) => ({
+    codigo: String(c.codigo), nome: String(c.nome),
+    pontos: Number(c.pontos), compras: Number(c.compras),
+    recompensas: Number(c.recompensas_disponiveis),
+  }));
 
   return (
-    <main className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-6xl mx-auto">
-
-        <h1 className="text-5xl font-bold text-red-600">
-          Pontos
-        </h1>
-
-        <p className="mt-4 text-zinc-400">
-          Consulte os pontos dos clientes e as recompensas disponíveis.
-        </p>
-
-        <div className="space-y-6 mt-10">
-          {listaClientes.map((cliente) => {
-            const disponiveis = recompensas.filter(
-              (recompensa) => cliente.pontos >= recompensa.pontos
-            );
-
-            return (
-              <Link
-                key={cliente.codigo}
-                href={`/admin/cliente/${cliente.codigo}`}
-                className="block bg-zinc-900 border border-zinc-700 rounded-xl p-6 hover:border-red-600 transition"
-              >
-                <h2 className="text-2xl font-bold">
-                  {cliente.nome}
-                </h2>
-
-                <p className="text-zinc-400 mt-1">
-                  Código: {cliente.codigo}
-                </p>
-
-                <p className="text-xl mt-4">
-                  ⭐ {cliente.pontos} pontos
-                </p>
-
-                <p className="mt-3">
-                  🎁 {disponiveis.length} recompensa
-                  {disponiveis.length !== 1 ? "s" : ""} disponível
-                  {disponiveis.length !== 1 ? "eis" : ""}
-                </p>
-              </Link>
-            );
-          })}
-        </div>
-
+    <main className="min-h-screen bg-black px-5 py-8 text-white">
+      <div className="mx-auto max-w-5xl">
+        <Link href="/admin" className="text-zinc-400 hover:text-white">← Voltar ao painel</Link>
+        <h1 className="mt-6 text-4xl font-bold text-red-500">Pontos</h1>
+        <p className="mt-3 text-zinc-400">Clientes ativos, ordenados pelo saldo disponível. Recompensas ativas com custo positivo e dentro do saldo.</p>
+        <ListaPontos clientes={clientes} />
       </div>
     </main>
   );

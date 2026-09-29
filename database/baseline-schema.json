@@ -1,0 +1,636 @@
+{
+  "columns": [
+    {
+      "table_name": "clientes_v2",
+      "column_name": "id",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "codigo",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "nome",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "whatsapp",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "nascimento",
+      "data_type": "date",
+      "udt_name": "date",
+      "is_nullable": "YES",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "pontos",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "compras",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "ativo",
+      "data_type": "boolean",
+      "udt_name": "bool",
+      "is_nullable": "NO",
+      "column_default": "true",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "criado_em",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": "now()",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "atualizado_em",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": "now()",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "observacao_inatividade",
+      "data_type": "character varying",
+      "udt_name": "varchar",
+      "is_nullable": "YES",
+      "column_default": null,
+      "character_maximum_length": 300,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "clientes_v2",
+      "column_name": "foto_url",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "movimentacoes_v2",
+      "column_name": "id",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "movimentacoes_v2",
+      "column_name": "cliente_codigo",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "movimentacoes_v2",
+      "column_name": "tipo",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "movimentacoes_v2",
+      "column_name": "descricao",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "movimentacoes_v2",
+      "column_name": "pontos",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0
+    },
+    {
+      "table_name": "movimentacoes_v2",
+      "column_name": "saldo_anterior",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0
+    },
+    {
+      "table_name": "movimentacoes_v2",
+      "column_name": "saldo_novo",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0
+    },
+    {
+      "table_name": "movimentacoes_v2",
+      "column_name": "produto_id",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "movimentacoes_v2",
+      "column_name": "quantidade",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "YES",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0
+    },
+    {
+      "table_name": "movimentacoes_v2",
+      "column_name": "criado_em",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": "now()",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "produtos_v2",
+      "column_name": "id",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "produtos_v2",
+      "column_name": "nome",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "produtos_v2",
+      "column_name": "descricao",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "produtos_v2",
+      "column_name": "pontos",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0
+    },
+    {
+      "table_name": "produtos_v2",
+      "column_name": "ativo",
+      "data_type": "boolean",
+      "udt_name": "bool",
+      "is_nullable": "NO",
+      "column_default": "true",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "recompensas_v2",
+      "column_name": "id",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "recompensas_v2",
+      "column_name": "nome",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "recompensas_v2",
+      "column_name": "descricao",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    },
+    {
+      "table_name": "recompensas_v2",
+      "column_name": "pontos",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0
+    },
+    {
+      "table_name": "recompensas_v2",
+      "column_name": "ativo",
+      "data_type": "boolean",
+      "udt_name": "bool",
+      "is_nullable": "NO",
+      "column_default": "true",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null
+    }
+  ],
+  "constraints": [
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_ativo_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL ativo"
+    },
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_atualizado_em_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL atualizado_em"
+    },
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_codigo_key",
+      "tipo": "u",
+      "definicao": "UNIQUE (codigo)"
+    },
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_codigo_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL codigo"
+    },
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_compras_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL compras"
+    },
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_criado_em_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL criado_em"
+    },
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_id_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL id"
+    },
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_nome_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL nome"
+    },
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_pkey",
+      "tipo": "p",
+      "definicao": "PRIMARY KEY (id)"
+    },
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_pontos_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL pontos"
+    },
+    {
+      "tabela": "clientes_v2",
+      "nome": "clientes_v2_whatsapp_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL whatsapp"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "chk_movimentacoes_quantidade",
+      "tipo": "c",
+      "definicao": "CHECK (((quantidade IS NULL) OR (quantidade > 0)))"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "chk_movimentacoes_tipo",
+      "tipo": "c",
+      "definicao": "CHECK ((tipo = ANY (ARRAY['COMPRA'::text, 'RESGATE'::text, 'AJUSTE'::text, 'BONUS'::text])))"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "fk_movimentacoes_cliente",
+      "tipo": "f",
+      "definicao": "FOREIGN KEY (cliente_codigo) REFERENCES clientes_v2(codigo) ON UPDATE CASCADE ON DELETE RESTRICT"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "movimentacoes_v2_cliente_codigo_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL cliente_codigo"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "movimentacoes_v2_criado_em_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL criado_em"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "movimentacoes_v2_descricao_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL descricao"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "movimentacoes_v2_id_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL id"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "movimentacoes_v2_pkey",
+      "tipo": "p",
+      "definicao": "PRIMARY KEY (id)"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "movimentacoes_v2_pontos_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL pontos"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "movimentacoes_v2_saldo_anterior_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL saldo_anterior"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "movimentacoes_v2_saldo_novo_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL saldo_novo"
+    },
+    {
+      "tabela": "movimentacoes_v2",
+      "nome": "movimentacoes_v2_tipo_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL tipo"
+    },
+    {
+      "tabela": "produtos_v2",
+      "nome": "produtos_v2_ativo_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL ativo"
+    },
+    {
+      "tabela": "produtos_v2",
+      "nome": "produtos_v2_descricao_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL descricao"
+    },
+    {
+      "tabela": "produtos_v2",
+      "nome": "produtos_v2_id_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL id"
+    },
+    {
+      "tabela": "produtos_v2",
+      "nome": "produtos_v2_nome_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL nome"
+    },
+    {
+      "tabela": "produtos_v2",
+      "nome": "produtos_v2_pkey",
+      "tipo": "p",
+      "definicao": "PRIMARY KEY (id)"
+    },
+    {
+      "tabela": "produtos_v2",
+      "nome": "produtos_v2_pontos_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL pontos"
+    },
+    {
+      "tabela": "recompensas_v2",
+      "nome": "recompensas_v2_ativo_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL ativo"
+    },
+    {
+      "tabela": "recompensas_v2",
+      "nome": "recompensas_v2_descricao_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL descricao"
+    },
+    {
+      "tabela": "recompensas_v2",
+      "nome": "recompensas_v2_id_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL id"
+    },
+    {
+      "tabela": "recompensas_v2",
+      "nome": "recompensas_v2_nome_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL nome"
+    },
+    {
+      "tabela": "recompensas_v2",
+      "nome": "recompensas_v2_pkey",
+      "tipo": "p",
+      "definicao": "PRIMARY KEY (id)"
+    },
+    {
+      "tabela": "recompensas_v2",
+      "nome": "recompensas_v2_pontos_not_null",
+      "tipo": "n",
+      "definicao": "NOT NULL pontos"
+    }
+  ],
+  "indexes": [
+    {
+      "tablename": "clientes_v2",
+      "indexname": "clientes_v2_codigo_key",
+      "indexdef": "CREATE UNIQUE INDEX clientes_v2_codigo_key ON public.clientes_v2 USING btree (codigo)"
+    },
+    {
+      "tablename": "clientes_v2",
+      "indexname": "clientes_v2_pkey",
+      "indexdef": "CREATE UNIQUE INDEX clientes_v2_pkey ON public.clientes_v2 USING btree (id)"
+    },
+    {
+      "tablename": "clientes_v2",
+      "indexname": "idx_clientes_v2_ativo",
+      "indexdef": "CREATE INDEX idx_clientes_v2_ativo ON public.clientes_v2 USING btree (ativo)"
+    },
+    {
+      "tablename": "clientes_v2",
+      "indexname": "idx_clientes_v2_codigo",
+      "indexdef": "CREATE INDEX idx_clientes_v2_codigo ON public.clientes_v2 USING btree (codigo)"
+    },
+    {
+      "tablename": "clientes_v2",
+      "indexname": "idx_clientes_v2_pontos",
+      "indexdef": "CREATE INDEX idx_clientes_v2_pontos ON public.clientes_v2 USING btree (pontos DESC)"
+    },
+    {
+      "tablename": "clientes_v2",
+      "indexname": "idx_clientes_v2_whatsapp",
+      "indexdef": "CREATE INDEX idx_clientes_v2_whatsapp ON public.clientes_v2 USING btree (whatsapp)"
+    },
+    {
+      "tablename": "movimentacoes_v2",
+      "indexname": "idx_movimentacoes_v2_cliente",
+      "indexdef": "CREATE INDEX idx_movimentacoes_v2_cliente ON public.movimentacoes_v2 USING btree (cliente_codigo)"
+    },
+    {
+      "tablename": "movimentacoes_v2",
+      "indexname": "idx_movimentacoes_v2_cliente_data",
+      "indexdef": "CREATE INDEX idx_movimentacoes_v2_cliente_data ON public.movimentacoes_v2 USING btree (cliente_codigo, criado_em DESC)"
+    },
+    {
+      "tablename": "movimentacoes_v2",
+      "indexname": "idx_movimentacoes_v2_data",
+      "indexdef": "CREATE INDEX idx_movimentacoes_v2_data ON public.movimentacoes_v2 USING btree (criado_em DESC)"
+    },
+    {
+      "tablename": "movimentacoes_v2",
+      "indexname": "idx_movimentacoes_v2_tipo",
+      "indexdef": "CREATE INDEX idx_movimentacoes_v2_tipo ON public.movimentacoes_v2 USING btree (tipo)"
+    },
+    {
+      "tablename": "movimentacoes_v2",
+      "indexname": "movimentacoes_v2_pkey",
+      "indexdef": "CREATE UNIQUE INDEX movimentacoes_v2_pkey ON public.movimentacoes_v2 USING btree (id)"
+    },
+    {
+      "tablename": "produtos_v2",
+      "indexname": "produtos_v2_pkey",
+      "indexdef": "CREATE UNIQUE INDEX produtos_v2_pkey ON public.produtos_v2 USING btree (id)"
+    },
+    {
+      "tablename": "recompensas_v2",
+      "indexname": "recompensas_v2_pkey",
+      "indexdef": "CREATE UNIQUE INDEX recompensas_v2_pkey ON public.recompensas_v2 USING btree (id)"
+    }
+  ],
+  "triggers": []
+}

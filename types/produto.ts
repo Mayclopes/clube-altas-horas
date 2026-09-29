@@ -4,4 +4,5 @@ export type Produto = {
   descricao: string;
   pontos: number;
   ativo: boolean;
+  preco_centavos?: string | null;
 };

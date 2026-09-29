@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:financeiro": "node scripts/test-financeiro.cjs && node scripts/test-carrinho.cjs && node scripts/test-relatorios-isolados.cjs && node scripts/test-regressao.cjs",
+    "test:concorrencia": "node scripts/test-concorrencia.cjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
@@ -16,12 +18,15 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "embedded-postgres": "18.4.0-beta.17",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "jsdom": "^30.1.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

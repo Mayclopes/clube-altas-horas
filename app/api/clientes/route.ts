@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
-import clientes from "@/data/clientes.json";
 
 export async function GET() {
-  return NextResponse.json(clientes);
+  return NextResponse.json(
+    { erro: "Esta API pertence à V1 e foi desativada." },
+    { status: 410 }
+  );
 }

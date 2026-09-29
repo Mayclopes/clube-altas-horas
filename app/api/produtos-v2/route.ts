@@ -1,4 +1,6 @@
 import { sql } from "@/lib/db";
+import { financeiroDisponivel } from "@/lib/financeiro/disponibilidade";
+import { MAX_PRECO } from "@/lib/financeiro/dinheiro";
 
 export const dynamic = "force-dynamic";
 
@@ -10,12 +12,13 @@ export async function GET() {
         nome,
         descricao,
         pontos,
-        ativo
-      FROM produtos_v2
+        ativo,
+        to_jsonb(p)->>'preco_centavos' AS preco_centavos
+      FROM produtos_v2 p
       ORDER BY id
     `;
 
-    return Response.json(produtos);
+    return Response.json(produtos, { headers: { "X-Financeiro-Disponivel": String(await financeiroDisponivel()) } });
   } catch (erro) {
     console.error(
       "Erro ao buscar produtos:",
@@ -87,7 +90,23 @@ export async function PUT(request: Request) {
       );
     }
 
-    const resultado = await sql`
+    const alteraPreco = Object.hasOwn(dados, "preco_centavos");
+    if (alteraPreco && !(await financeiroDisponivel())) {
+      return Response.json({ erro: "Preços financeiros ainda não ativados." }, { status: 409 });
+    }
+    if (alteraPreco && dados.preco_centavos !== null &&
+      (typeof dados.preco_centavos !== "string" || !/^\d{1,10}$/.test(dados.preco_centavos) || BigInt(dados.preco_centavos) > MAX_PRECO)) {
+      return Response.json({ erro: "Preço inválido." }, { status: 400 });
+    }
+    if (!Number.isInteger(dados.pontos) || dados.pontos > 2147483647) {
+      return Response.json({ erro: "Informe pontos inteiros dentro do limite permitido." }, { status: 400 });
+    }
+    const resultado = alteraPreco ? await sql`
+      UPDATE produtos_v2 SET nome = ${dados.nome.trim()}, pontos = ${dados.pontos},
+        ativo = ${dados.ativo}, preco_centavos = ${dados.preco_centavos}::bigint
+      WHERE id = ${dados.id}
+      RETURNING id, nome, descricao, pontos, ativo, preco_centavos::text AS preco_centavos
+    ` : await sql`
       UPDATE produtos_v2
       SET
         nome = ${dados.nome.trim()},
@@ -99,7 +118,8 @@ export async function PUT(request: Request) {
         nome,
         descricao,
         pontos,
-        ativo
+        ativo,
+        to_jsonb(produtos_v2)->>'preco_centavos' AS preco_centavos
     `;
 
     if (resultado.length === 0) {
