@@ -1,4 +1,5 @@
 import { createHmac } from "crypto";
+import { timingSafeEqual } from "crypto";
 
 const DURACAO_SESSAO_MS =
   8 * 60 * 60 * 1000;
@@ -115,8 +116,15 @@ export function credenciaisAdminValidas(
     );
   }
 
-  return (
-    usuario === usuarioCorreto &&
-    senha === senhaCorreta
-  );
+  return usuario === usuarioCorreto && senhaAdminValida(senha);
+}
+
+// Reautenticação de operações administrativas sensíveis. A senha só é comparada
+// no servidor e nunca é enviada de volta ao navegador ou registrada em logs.
+export function senhaAdminValida(senha: unknown) {
+  const senhaCorreta = process.env.ADMIN_PASSWORD;
+  if (!senhaCorreta || typeof senha !== "string") return false;
+  const recebida = Buffer.from(senha);
+  const esperada = Buffer.from(senhaCorreta);
+  return recebida.length === esperada.length && timingSafeEqual(recebida, esperada);
 }

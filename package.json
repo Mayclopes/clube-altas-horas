@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:financeiro": "node scripts/test-financeiro.cjs && node scripts/test-carrinho.cjs && node scripts/test-relatorios-isolados.cjs && node scripts/test-regressao.cjs",
+    "test:financeiro": "node scripts/test-financeiro.cjs && node scripts/test-carrinho.cjs && node scripts/test-relatorios-isolados.cjs && node scripts/test-regressao.cjs && node scripts/test-limpeza-cliente.cjs",
     "test:concorrencia": "node scripts/test-concorrencia.cjs"
   },
   "dependencies": {

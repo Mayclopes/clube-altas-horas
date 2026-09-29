@@ -6,6 +6,7 @@ import PainelPontuacao from "./PainelPontuacao";
 import EditarCliente from "./EditarCliente";
 import FotoCliente from "./FotoCliente";
 import CarrinhoVenda from "./CarrinhoVenda";
+import ZerarDadosCliente from "./ZerarDadosCliente";
 import { financeiroDisponivel } from "@/lib/financeiro/disponibilidade";
 
 type Props = {
@@ -239,6 +240,8 @@ export default async function ClienteAdmin({
             </p>
           </div>
         )}
+
+        <ZerarDadosCliente codigo={cliente.codigo} nome={cliente.nome} />
 
         <div className="mt-8 grid gap-3">
           <Link
