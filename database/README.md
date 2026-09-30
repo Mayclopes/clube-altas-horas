@@ -27,8 +27,10 @@ não foi removido. Demais detalhes estão no JSON estrutural.
 ## Fluxo versionado
 
 - `migrations/`: somente migrations revisadas e aprovadas; numeração crescente.
-- `proposals/0001_financeiro.sql`: proposta NÃO executada no Neon real e fora da pasta
-  de aplicação. Não há runner automático no projeto.
+- `migrations/0002_limpeza_cliente.sql`: migration aprovada da função de limpeza
+  administrativa atômica, promovida após a confirmação do drift em produção.
+- `proposals/0001_financeiro.sql`: SQL financeiro aplicado anteriormente no Neon real;
+  o arquivo histórico permanece em `proposals/`. Não há runner automático no projeto.
 - Antes de aplicar: revisar desenho, confirmar ambiente, backup/recovery,
   testar numa branch Neon isolada, verificar locks e validar todos os dados.
 - Promover o arquivo aprovado para migrations, registrar versão/checksum/data
